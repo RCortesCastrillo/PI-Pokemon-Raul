@@ -36,8 +36,9 @@ function getAllPokemons() {
                 arrayDataBase.forEach(poke => {
                     const pokeObject = {
                         ...poke.toJSON(),
-                        Types: poke.Types.map(type => type.name)
+                        PokemonTypes: poke.Types.map(type => type.name)
                     };
+                    delete pokeObject.Types;
                     miArray.push(pokeObject);
                 });
 

@@ -25,9 +25,9 @@ const { Op } = require("sequelize");
 
                 pokeFound={
                  ...foundingPoke.toJSON(),
-                 Types:foundingPoke.Types.map((type) => type.name)
+                 pokemonTypes:foundingPoke.Types.map((type) => type.name)
               }
-     
+              delete pokeFound.Types
              return pokeFound
 
             }

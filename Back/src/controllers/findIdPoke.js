@@ -17,9 +17,10 @@ try {
    
          const pokeObject={
             ...poke.toJSON(),
-            Types:poke.Types.map((type) => type.name)
+            pokemonTypes:poke.Types.map((type) => type.name)
          }
-           return pokeObject
+             delete pokeObject.Types
+             return pokeObject
 
         }else{
     
