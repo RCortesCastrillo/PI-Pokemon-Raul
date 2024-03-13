@@ -3,7 +3,7 @@ const { Pokemon, Type } = require('../db');
 
 
 function getAllPokemons() {
-    return axios.get('https://pokeapi.co/api/v2/pokemon?limit=1')
+    return axios.get('https://pokeapi.co/api/v2/pokemon?limit=100')
         .then(response => {
             const pokemonData = response.data.results;
             const pokemonPromises = pokemonData.map((element) => axios.get(element.url));
@@ -36,7 +36,7 @@ function getAllPokemons() {
                 arrayDataBase.forEach(poke => {
                     const pokeObject = {
                         ...poke.toJSON(),
-                        PokemonTypes: poke.Types.map(type => type.name)
+                        pokemonTypes: poke.Types.map(type => type.name)
                     };
                     delete pokeObject.Types;
                     miArray.push(pokeObject);
