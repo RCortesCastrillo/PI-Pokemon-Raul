@@ -1,16 +1,29 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-
+import { searchPokemons, setCurrentPage } from "../../redux/actions";
 import styles from "../SearchBar/SearchBar.module.scss";
 
 const SearchBar = () => {
+  const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
+  const { pathname } = useLocation();
 
+  const handleSearch = () => {
+    dispatch(searchPokemons(searchTerm.trim()));
+
+    console.log("Antes de la actualización:", searchTerm);
+
+    dispatch(setCurrentPage(1));
+    setSearchTerm("");
+  };
 
   
-
-  
-  
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   return (
     <div className={styles.container}>

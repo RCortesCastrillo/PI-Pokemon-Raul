@@ -6,9 +6,17 @@ import {
   SORT_BY_ORDER,
   RESET_FILTERS ,
   SET_POKEMONS_PER_PAGE,
-  SET_CURRENT_PAGE
+  SET_CURRENT_PAGE,
+  SET_SELECTED_POKEMON,
+  CREATE_POKEMON_REQUEST,
+  CREATE_POKEMON_SUCCESS,
+  CREATE_POKEMON_FAILURE
+
+
   } from "./actionTypes";
   
+  
+ 
 
 
 const initialState={
@@ -18,6 +26,10 @@ const initialState={
   order:'asc',
   currentPage: 1,
   pokemonsPerPage: 12,
+  types: [],
+  originPokemon: [],
+  creatingPokemon: false,
+  createPokemonError: null,
 }
 
 const reducer=(state=initialState,{type,payload})=>{
@@ -26,14 +38,14 @@ const reducer=(state=initialState,{type,payload})=>{
   
     case GET_POKEMONS:
         return{...state,
-          pokemons:payload
-        
+          pokemons:payload,
+         filteredPokemons:payload
         }
 
         case SET_POKEMONS:
           return {
             ...state,
-            pokemons: payload,
+            
             filteredPokemons: payload,
           };
 
@@ -125,7 +137,7 @@ const reducer=(state=initialState,{type,payload})=>{
                       order: "asc",
                       filteredPokemons: state.pokemons,
                     };
-                    
+
                     case SET_POKEMONS_PER_PAGE:
                       return {
                         ...state,
@@ -137,6 +149,36 @@ const reducer=(state=initialState,{type,payload})=>{
                         currentPage: payload,
                       };
                 
+                      case SET_SELECTED_POKEMON:
+                        return {
+                          ...state,
+                          selectedPokemon: payload,
+                        };
+
+                        case CREATE_POKEMON_REQUEST:
+                          return {
+                            ...state,
+                            creatingPokemon: true,
+                            createPokemonError: null,
+                          };
+                    
+                        case CREATE_POKEMON_SUCCESS:
+                          return {
+                            ...state,
+                            creatingPokemon: false,
+                            pokemons: [...state.pokemons, payload],
+                            filteredPokemons: [...state.filteredPokemons, payload],
+                            createPokemonError: null,
+                          };
+                    
+                        case CREATE_POKEMON_FAILURE:
+                          return {
+                            ...state,
+                            creatingPokemon: false,
+                            createPokemonError: payload,
+                          };
+
+
 
 
     default:

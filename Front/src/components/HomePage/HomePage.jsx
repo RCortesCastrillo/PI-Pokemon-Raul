@@ -33,7 +33,7 @@ const [originFilter, setOriginFilter] = useState("");
 useEffect(()=>{
   
   dispatch(fetchTypes());
-  dispatch(searchPokemons());
+  dispatch(getAllPokemons());
   dispatch(setPokemonsPerPage(12));
 },[dispatch])
 

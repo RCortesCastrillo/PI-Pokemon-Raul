@@ -6,7 +6,12 @@ import {GET_POKEMONS,
         SORT_BY_ORDER,
         RESET_FILTERS,
         SET_POKEMONS_PER_PAGE,
-        SET_CURRENT_PAGE
+        SET_CURRENT_PAGE,
+        SET_SELECTED_POKEMON,
+        CREATE_POKEMON_REQUEST,
+        CREATE_POKEMON_SUCCESS,
+        CREATE_POKEMON_FAILURE
+
       
       }from "./actionTypes";
 
@@ -34,18 +39,12 @@ export const searchPokemons = (searchTerm) => {
       }
 
       const { data } = await axios.get(url);
-      const dbPokemons = data;
+      const dbPokemons = [];
 
-      let allPokemons = [];
+      dbPokemons.push(data)
+     
 
-      if (dbPokemons.length > 0) {
-        allPokemons = dbPokemons;
-      } else {
-        const response = await axios.get(`${URL}`);
-        allPokemons = response.data;
-      }
-
-      dispatch({type:SET_POKEMONS, payload:allPokemons});
+      dispatch({type:SET_POKEMONS, payload:dbPokemons});
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -100,3 +99,56 @@ export const setCurrentPage = (page) => ({
   type: SET_CURRENT_PAGE,
   payload: page,
 });
+
+
+export const fetchPokemonById = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${URL}/${id}`);
+      const pokemon = response.data;
+      dispatch({type:SET_SELECTED_POKEMON,payload: pokemon});
+    } catch (error) {
+      console.error("Error fetching Pokemon by ID:", error);
+    }
+  };
+};
+
+
+
+export const crearPokemonRequest = () => ({
+  type: CREATE_POKEMON_REQUEST,
+});
+
+export const crearPokemonSuccess = (pokemon) => ({
+  type: CREATE_POKEMON_SUCCESS,
+  payload: pokemon,
+});
+
+export const crearPokemonFailure = (error) => ({
+  type: CREATE_POKEMON_FAILURE,
+  payload: error,
+});
+
+export const crearPokemon = (pokemonData) => async (dispatch) => {
+  dispatch(crearPokemonRequest());
+
+  try {
+    const response = await fetch(`${URL}`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(pokemonData),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      dispatch(crearPokemonSuccess(data.poke));
+    } else {
+      dispatch(crearPokemonFailure('Error al crear el Pokemon'));
+    }
+  } catch (error) {
+    dispatch(crearPokemonFailure('Error de red'));
+  }
+};
