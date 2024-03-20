@@ -45,7 +45,7 @@ const reducer=(state=initialState,{type,payload})=>{
         case SET_POKEMONS:
           return {
             ...state,
-            
+            pokemons:payload,
             filteredPokemons: payload,
           };
 

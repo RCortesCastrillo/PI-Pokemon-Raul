@@ -26,6 +26,7 @@ const NavBar = ({ handleSearch }) => {
             <button className={Style.button}>Logout</button>
           </Link>
         </div>
+        
       </div>
     </div>
   );

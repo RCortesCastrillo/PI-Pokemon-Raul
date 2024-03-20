@@ -54,6 +54,8 @@ export const searchPokemons = (searchTerm) => {
 
 
 
+
+
 export const fetchTypes = () => {
   return async (dispatch) => {
     try {
